@@ -1,7 +1,7 @@
 CREATE PROCEDURE `usernames_cleanup` ()
 LANGUAGE SQL
 SQL SECURITY DEFINER
-COMMENT 'A procedure to cleanup repeated usernames on a user table'
+COMMENT 'A procedure to cleanup (adding a leading _1) repeated usernames on a user table'
 BEGIN
 	DECLARE counter INT DEFAULT 1;
 	DECLARE userid INT;
@@ -24,8 +24,8 @@ BEGIN
 		FETCH userdata INTO userid, current_username;
 		
 		IF done = 1 THEN
-      		LEAVE read_loop;
-    	END IF;
+      			LEAVE read_loop;
+    		END IF;
 		
 		IF current_username = previous_username THEN
 			SET new_username = CONCAT(current_username, '_0', counter);
