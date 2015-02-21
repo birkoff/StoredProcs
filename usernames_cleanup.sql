@@ -28,6 +28,10 @@ BEGIN
     		END IF;
 		
 		IF current_username = previous_username THEN
+			/* 
+			- If instead if usernames we have emails we can create the new_usermeial adding a +01
+			SET new_useremail = CONCAT(SUBSTRING_INDEX(current_useremail, '@', 1), '+0', counter,  '@',SUBSTRING_INDEX(current_useremail, '@', -1));
+			*/
 			SET new_username = CONCAT(current_username, '_0', counter);
 			SET counter = counter + 1;
 			INSERT INTO double_usernames VALUES(userid, current_username, new_username);
@@ -43,3 +47,13 @@ BEGIN
 	CLOSE userdata;
 	
 END$$
+
+/* 
+- We can either update the usernames or just delete the extra users 
+*/
+UPDATE tbl_user
+INNER JOIN
+double_usernames
+ON tbl_user.userid = double_usernames.userid
+SET tbl_user.username = double_usernames.new_username
+WHERE double_usernames.new_username != ''
