@@ -1,3 +1,5 @@
+call usernames_cleanup();
+DELIMITER $$
 CREATE PROCEDURE `usernames_cleanup` ()
 LANGUAGE SQL
 SQL SECURITY DEFINER
@@ -45,7 +47,6 @@ BEGIN
 	END LOOP;
 	
 	CLOSE userdata;
-	
 END$$
 
 /* 
